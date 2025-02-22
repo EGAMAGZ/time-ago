@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build-data:
     permissions:
       contents: write
@@ -13,6 +14,15 @@ jobs:
       build_date: ${{ steps.data.outputs.builddate }}
       version: ${{ steps.data.outputs.version }}
       build_time: ${{ steps.data.outputs.buildtime }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Export release date
+        id: data
+        shell: bash
+        run: |
+          echo "builddate=$(date +"%Y-%m-%d")" >> $GITHUB_OUTPUT
+          echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
 
   test-bun:
     name: Run tests in Bun
