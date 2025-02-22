@@ -3,6 +3,9 @@ name: Publish package
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
 
   build-data:
