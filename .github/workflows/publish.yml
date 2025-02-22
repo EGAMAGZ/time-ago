@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Bun
-        uses: antongolub/action-setup-bun@v1.13.2
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: v1.x
 
@@ -85,7 +85,7 @@ jobs:
       - name: Run tests
         run: |
           echo '{ "type": "module" }' > package.json # Needed for tsx to work
-          npx --yes tsx --test *_test.ts
+          npx --yes tsx --test src/*_test.ts
 
   check-linting:
     name: Check linting
