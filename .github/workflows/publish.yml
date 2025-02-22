@@ -39,13 +39,14 @@ jobs:
         uses: antongolub/action-setup-bun@v1.13.2
         with:
           bun-version: v1.x
+
       - name: Install dependencies
         run: bunx jsr add @cross/test @std/assert
       - name: Run tests
         run: bun test --test-name-prefix *_test
 
   test-deno:
-    name: Run tests in Deno ({{ matrix.deno-version }})
+    name: Run tests in Deno (${{ matrix.deno-version }})
     runs-on: ubuntu-latest
     needs: build-data
     strategy:
@@ -68,7 +69,7 @@ jobs:
   test-node:
     permissions:
       contents: write
-    name: Run tests in Node.js ({{ matrix.node-version }})
+    name: Run tests in Node.js (${{ matrix.node-version }})
     runs-on: ubuntu-latest
     needs: build-data
     strategy:
