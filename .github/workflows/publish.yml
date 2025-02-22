@@ -4,6 +4,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-data:
+    permissions:
+      contents: write
+    name: Generate build data
+    runs-on: ubuntu-latest
+    outputs:
+      build_date: ${{ steps.data.outputs.builddate }}
+      version: ${{ steps.data.outputs.version }}
+      build_time: ${{ steps.data.outputs.buildtime }}
+
   test-bun:
     name: Run tests in Bun
     runs-on: ubuntu-latest
