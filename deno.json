@@ -1,0 +1,20 @@
+{
+  "name": "@egamagz/time-ago",
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "exports": "./mod.ts",
+  "lint": {
+    "rules": {
+      "include": [
+        "console",
+        "camelcase"
+      ]
+    }
+  },
+  "publish": {
+    "exclude": [
+      ".github"
+    ]
+  }
+}
