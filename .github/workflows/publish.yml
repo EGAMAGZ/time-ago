@@ -1,0 +1,107 @@
+name: Publish package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-bun:
+    name: Run tests in Bun
+    runs-on: ubuntu-latest
+    needs: build-data
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: antongolub/action-setup-bun@v1.13.2 
+        with:
+          bun-version: v1.x 
+      - name: Install dependencies
+        run: bunx jsr add @cross/test @std/assert 
+      - name: Run tests
+        run: bun test --test-name-prefix *_test
+
+  test-deno:
+    name: Run tests in Deno ({{ matrix.deno-version }})
+    runs-on: ubuntu-latest
+    needs: build-data
+    strategy:
+      matrix:
+        deno-version: [1.x, 2.x]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - name: Install dependencies
+        run: deno add jsr:@cross/test jsr:@std/assert 
+      - name: Run tests
+        run: deno test --doc
+  
+  test-node:
+    permissions:
+      contents: write
+    name: Run tests in Node.js ({{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    needs: build-data
+    strategy:
+      matrix:
+        node-version: [18.x,20.x, 22.x]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npx jsr add @cross/test @std/assert 
+      - name: Run tests
+        run: |
+          echo '{ "type": "module" }' > package.json # Needed for tsx to work
+          npx --yes tsx --test *_test.ts
+
+  check-linting:
+    name: Check linting
+    needs: build-data
+    uses: ./.github/workflows/lint.yml
+
+  release:
+    name: Create a tag for the release
+    runs-on: ubuntu-latest
+    needs: [build-data, test-bun, test-deno, test-node, check-linting]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build-data.outputs.version }}
+          name: "Release build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }})"
+          generate_release_notes: true
+          make_latest: true
+      - name: Install jq
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq
+      - name: Update deno.json version
+        run: |
+          jq --arg version "${{ needs.build-data.outputs.version }}" '.version = $version' deno.json > tmp.json && mv tmp.json deno.json
+
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+    needs: [ release, build-data ]
+
+    permissions:
+      contents: read
+      id-token: write 
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Publish package
+        run: npx jsr publish
