@@ -11,7 +11,6 @@ jobs:
   test-bun:
     name: Run tests in Bun
     runs-on: ubuntu-latest
-    needs: build-data
 
     steps:
       - name: Checkout
@@ -30,7 +29,6 @@ jobs:
   test-deno:
     name: Run tests in Deno (${{ matrix.deno-version }})
     runs-on: ubuntu-latest
-    needs: build-data
     strategy:
       matrix:
         deno-version: [1.x, 2.x]
@@ -53,7 +51,6 @@ jobs:
       contents: write
     name: Run tests in Node.js (${{ matrix.node-version }})
     runs-on: ubuntu-latest
-    needs: build-data
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
