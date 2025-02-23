@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           echo "builddate=$(date +"%Y-%m-%d")" >> $GITHUB_OUTPUT
-          echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+          echo "version=$(date +"%Y.%m.%d")" >> $GITHUB_OUTPUT
 
   test-bun:
     name: Run tests in Bun
