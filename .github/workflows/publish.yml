@@ -138,13 +138,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Get the full history
+          fetch-depth: 0 # Get the full history
 
       - name: Update local repository to latest commit
         run: |
           git fetch origin ${{ github.ref }}
           git reset --hard origin/${{ github.ref }}
-
 
       - name: Publish package
         run: npx jsr publish
