@@ -23,66 +23,10 @@ jobs:
           echo "builddate=$(date +"%Y-%m-%d")" >> $GITHUB_OUTPUT
           echo "version=$(date +"%Y.%m.%d")" >> $GITHUB_OUTPUT
 
-  test-bun:
-    name: Run tests in Bun
-    runs-on: ubuntu-latest
+  run-tests:
+    name: Run tests
     needs: build-data
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: "latest"
-
-      - name: Install dependencies
-        run: bunx jsr add @cross/test @std/assert
-      - name: Run tests
-        run: bun test --test-name-prefix *_test
-
-  test-deno:
-    name: Run tests in Deno (${{ matrix.deno-version }})
-    runs-on: ubuntu-latest
-    needs: build-data
-    strategy:
-      matrix:
-        deno-version: [1.x, 2.x]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: ${{ matrix.deno-version }}
-      - name: Install dependencies
-        run: deno add jsr:@cross/test jsr:@std/assert
-      - name: Run tests
-        run: deno test --doc
-
-  test-node:
-    permissions:
-      contents: write
-    name: Run tests in Node.js (${{ matrix.node-version }})
-    runs-on: ubuntu-latest
-    needs: build-data
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: npx jsr add @cross/test @std/assert @std/expect
-      - name: Run tests
-        run: |
-          echo '{ "type": "module" }' > package.json # Needed for tsx to work
-          npx --yes tsx --test src/*_test.ts
+    uses: ./.github/workflows/test.yml
 
   check-linting:
     name: Check linting
