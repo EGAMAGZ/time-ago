@@ -102,20 +102,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.build-data.outputs.version }}
-          name: "Release build - ${{ needs.build-data.outputs.version }}"
-          generate_release_notes: true
-          make_latest: true
       - name: Install jq
         run: |
           sudo apt-get update && sudo apt-get install -y jq
       - name: Update deno.json version
         run: |
-          # Normalize the version by removing leading zeros
-          normalized_version=$(echo "${{ needs.build-data.outputs.version }}" | sed 's/\.0*//g')
+          # Normalize the version by removing leading zeros from minor and patch versions
+          normalized_version=$(echo "${{ needs.build-data.outputs.version }}" | sed 's/\([0-9]*\)\.0\([0-9]*\)/\1.\2/' | sed 's/\.\(0\+\)/./g')
           jq --arg version "$normalized_version" '.version = $version' deno.json > tmp.json && mv tmp.json deno.json
       - name: Commit changes
         run: |
@@ -126,6 +119,13 @@ jobs:
       - name: Push changes
         run: |
           git push
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build-data.outputs.version }}
+          name: "Release build - ${{ needs.build-data.outputs.version }}"
+          generate_release_notes: true
+          make_latest: true
 
   publish:
     name: Publish
