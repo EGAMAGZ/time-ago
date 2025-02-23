@@ -142,8 +142,8 @@ jobs:
 
       - name: Update local repository to latest commit
         run: |
-          git fetch origin ${{ github.ref }}
-          git reset --hard origin/${{ github.ref }}
+          git fetch origin refs/heads/master
+          git reset --hard origin/master
 
       - name: Publish package
         run: npx jsr publish
