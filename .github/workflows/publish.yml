@@ -113,6 +113,15 @@ jobs:
       - name: Update deno.json version
         run: |
           jq --arg version "${{ needs.build-data.outputs.version }}" '.version = $version' deno.json > tmp.json && mv tmp.json deno.json
+      - name: Commit changes
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git add deno.json
+          git commit -m "Update version to ${{ needs.build-data.outputs.version }}"
+      - name: Push changes
+        run: |
+          git push
 
   publish:
     name: Publish package
