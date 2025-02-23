@@ -1,4 +1,10 @@
-const INTERVALS = [
+/**
+ * An array of time intervals represented in seconds.
+ * Each interval object contains a unit of time and the corresponding duration in seconds.
+ *
+ * @type {Array<{ unit: string; seconds: number }>}
+ */
+const INTERVALS: Array<{ unit: string; seconds: number }> = [
   { unit: "year", seconds: 31536000 }, // 365 days
   { unit: "month", seconds: 2592000 }, // 30 days
   { unit: "week", seconds: 604800 }, // 7 days
@@ -22,11 +28,27 @@ const INTERVALS = [
  *
  * const fiveMinutesAgo = new Date(now.getTime() - (60 * 1000 * 5));
  *
- *  assertEquals(timeAgo(fiveMinutesAgo, now), "5 minutes ago");
+ * assertEquals(timeAgo(fiveMinutesAgo, now), "5 minutes ago");
  *
  * const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
  *
  * assertEquals(timeAgo(oneHourAgo, now), "an hour ago");
+ *
+ * const twoDaysAgo = new Date(now.getTime() - 86400 * 1000 * 2);
+ *
+ * assertEquals(timeAgo(twoDaysAgo, now), "2 days ago");
+ *
+ * const lastWeek = new Date(now.getTime() - 86400 * 1000 * 7);
+ *
+ * assertEquals(timeAgo(lastWeek, now), "a week ago");
+ *
+ * const lastMonth = new Date(now.getTime() - 86400 * 1000 * 30);
+ *
+ * assertEquals(timeAgo(lastMonth, now), "a month ago");
+ *
+ * const lastYear = new Date(now.getTime() - 86400 * 1000 * 365 * 5);
+ *
+ * assertEquals(timeAgo(lastYear, now), "5 years ago");
  * ```
  * @param {number | Date} time - The time to compare against the current time.
  * Can be a timestamp in milliseconds or a Date object.
