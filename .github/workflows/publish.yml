@@ -87,6 +87,8 @@ jobs:
   check-linting:
     name: Check linting
     needs: build-data
+    permissions:
+      contents: read
     uses: ./.github/workflows/lint.yml
 
   release:
