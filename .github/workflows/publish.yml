@@ -81,7 +81,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: npx jsr add @cross/test @std/assert
+        run: npx jsr add @cross/test @std/assert @std/expect
       - name: Run tests
         run: |
           echo '{ "type": "module" }' > package.json # Needed for tsx to work

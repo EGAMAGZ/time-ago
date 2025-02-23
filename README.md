@@ -20,7 +20,7 @@ _"minute"_, and _"second"_.
 ## Usage
 
 ```typescript
-import { timeAgo } from "./time_ago.ts";
+import { timeAgo } from "@egamagz/time-ago";
 
 console.log(timeAgo(new Date())); // "just now"
 
