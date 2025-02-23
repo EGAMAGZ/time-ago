@@ -93,7 +93,10 @@ jobs:
     uses: ./.github/workflows/lint.yml
 
   release:
-    name: Create a tag for the release
+    permissions:
+      contents: read
+      id-token: write
+    name: Create a release and publish package
     runs-on: ubuntu-latest
     needs: [build-data, test-bun, test-deno, test-node, check-linting]
 
@@ -122,20 +125,5 @@ jobs:
       - name: Push changes
         run: |
           git push
-
-  publish:
-    name: Publish package
-    runs-on: ubuntu-latest
-    needs: [release, build-data]
-
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Publish package
         run: npx jsr publish
