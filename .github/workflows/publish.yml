@@ -26,6 +26,8 @@ jobs:
   run-tests:
     name: Run tests
     needs: build-data
+    permissions:
+      contents: write
     uses: ./.github/workflows/test.yml
 
   check-linting:
