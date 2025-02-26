@@ -41,7 +41,7 @@ jobs:
       id-token: write
     name: Create a release
     runs-on: ubuntu-latest
-    needs: [build-data, test-bun, test-deno, test-node, check-linting]
+    needs: [build-data, run-tests, check-linting]
 
     steps:
       - name: Checkout
