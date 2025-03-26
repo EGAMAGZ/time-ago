@@ -17,6 +17,12 @@ minutes ago"_, and _"a year ago"_ for quick and simple time formatting.
 Supported intervals are _"year"_, _"month"_, _"week"_, _"day"_, _"hour"_,
 _"minute"_, and _"second"_.
 
+The `timeRemaining` function returns a human-readable string representing the
+time remaining until a given date. It supports producing strings like _"in 5
+seconds"_, _"in 5 minutes"_, and _"in a year"_ for quick and simple time
+formatting. Supported intervals are _"year"_, _"month"_, _"week"_, _"day"_,
+_"hour"_, _"minute"_, and _"second"_.
+
 ## Usage
 
 ### `timeAgo`
