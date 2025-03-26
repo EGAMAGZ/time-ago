@@ -19,6 +19,8 @@ _"minute"_, and _"second"_.
 
 ## Usage
 
+### `timeAgo`
+
 ```typescript
 import { timeAgo } from "@egamagz/time-ago";
 
@@ -29,6 +31,29 @@ console.log(timeAgo(new Date(Date.now() - 1000))); // "a second ago"
 console.log(timeAgo(new Date(Date.now() - 1000 * 60 * 5))); // "5 minutes ago"
 
 console.log(timeAgo(new Date(Date.now() - 1000 * 60 * 60 * 24 * 5))); // "5 days ago"
+```
+
+### `timeRemaining`
+
+```typescript
+import { timeRemaining } from "@egamagz/time-ago";
+
+console.log(timeRemaining(Date.now() + 5000)); // "in 5 seconds"
+
+console.log(timeRemaining(Date.now() + 5 * 60 * 1000)); // "in 5 minutes"
+
+console.log(timeRemaining(Date.now() + 3 * 60 * 60 * 1000)); // "in 3 hours"
+
+console.log(timeRemaining(Date.now() + 60 * 60 * 1000)); // "in an hour"
+
+// Weeks
+console.log(timeRemaining(Date.now() + 3 * 7 * 24 * 60 * 60 * 1000)); // "in 3 weeks"
+
+// Month (exact month difference)
+console.log(timeRemaining(Date.now() + 30 * 24 * 60 * 60 * 1000)); // "in a month"
+
+// Four weeks vs month example
+console.log(timeRemaining(Date.now() + 4 * 7 * 24 * 60 * 60 * 1000)); // "in 4 weeks"
 ```
 
 ## Installation
