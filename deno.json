@@ -1,6 +1,6 @@
 {
   "name": "@egamagz/time-ago",
-  "version": "2025.2.26",
+  "version": "2025.3.26",
   "lock": false,
   "imports": {
     "@cross/test": "jsr:@cross/test@^0.0.10",
